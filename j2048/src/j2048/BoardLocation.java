@@ -112,7 +112,7 @@ public final class BoardLocation {
 	 */
 	public BoardLocation getAdjacentLocation(Direction direction) {
 		int dx = direction.getX(), dy = direction.getY();
-		int x = this.x + dx, y = this.y - dy;
+		int x = this.x + dx, y = this.y + dy;
 		if (x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE) {
 			return new BoardLocation(x, y);
 		} else {
