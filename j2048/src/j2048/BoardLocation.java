@@ -79,9 +79,9 @@ public final class BoardLocation {
 	 *         such a location would be invalid
 	 */
 	public BoardLocation getAdjacentLocation(Direction direction) {
-		final int dx = direction.getX(), dy = direction.getY();
-		final int x = this.x + dx, y = this.y + dy;
-		if (x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE) {
+		if (hasAdjacentLocation(direction)) {
+			final int dx = direction.getX(), dy = direction.getY();
+			final int x = this.x + dx, y = this.y + dy;
 			return new BoardLocation(x, y);
 		} else {
 			return null;
@@ -104,6 +104,21 @@ public final class BoardLocation {
 	 */
 	public int getY() {
 		return y;
+	}
+
+	/**
+	 * Determines whether this location has a valid adjacent location in the
+	 * given direction.
+	 * 
+	 * @param direction
+	 *            the direction to check
+	 * @return {@code true} if the location adjacent to this location in the
+	 *         given direction is valid, or {@code false} if it is not
+	 */
+	public boolean hasAdjacentLocation(Direction direction) {
+		final int dx = direction.getX(), dy = direction.getY();
+		final int x = this.x + dx, y = this.y + dy;
+		return x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE;
 	}
 
 	@Override
