@@ -70,6 +70,25 @@ public final class BoardLocation {
 	}
 
 	/**
+	 * Gets the location adjacent to this location in the given direction. If
+	 * the location is invalid, this method will return {@code null}.
+	 * 
+	 * @param direction
+	 *            the direction in which to get the adjacent location
+	 * @return the adjacent location in the given direction, or {@code null} if
+	 *         such a location would be invalid
+	 */
+	public BoardLocation getAdjacentLocation(Direction direction) {
+		final int dx = direction.getX(), dy = direction.getY();
+		final int x = this.x + dx, y = this.y + dy;
+		if (x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE) {
+			return new BoardLocation(x, y);
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Gets the {@code x}-coordinate of this location in the grid.
 	 * 
 	 * @return the {@code x}-coordinate
@@ -99,25 +118,6 @@ public final class BoardLocation {
 	@Override
 	public String toString() {
 		return String.format("(%s, %s)", x, y);
-	}
-
-	/**
-	 * Gets the location adjacent to this location in the given direction. If
-	 * the location is invalid, this method will return {@code null}.
-	 * 
-	 * @param direction
-	 *            the direction in which to get the adjacent location
-	 * @return the adjacent location in the given direction, or {@code null} if
-	 *         such a location would be invalid
-	 */
-	public BoardLocation getAdjacentLocation(Direction direction) {
-		final int dx = direction.getX(), dy = direction.getY();
-		final int x = this.x + dx, y = this.y + dy;
-		if (x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE) {
-			return new BoardLocation(x, y);
-		} else {
-			return null;
-		}
 	}
 
 }
