@@ -2,6 +2,8 @@ package j2048;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 public class BoardLocationTest {
@@ -172,6 +174,29 @@ public class BoardLocationTest {
 					assertEquals(hc1, loc1.hashCode());
 					assertEquals(loc1.hashCode(), loc2.hashCode());
 				}
+			}
+		}
+	}
+
+	@Test
+	public void testGetAllAdjacentLocations() {
+		final Direction[] directions = Direction.values();
+		for (int i = 0; i < BoardLocation.BOARD_SIZE; i++) {
+			for (int j = 0; j < BoardLocation.BOARD_SIZE; j++) {
+				final BoardLocation loc = new BoardLocation(i, j);
+				final List<BoardLocation> adj = loc.getAllAdjacentLocations();
+
+				int count = 0;
+				for (Direction dir : directions) {
+					final BoardLocation here = loc.getAdjacentLocation(dir);
+					if (here == null) {
+						assertFalse(adj.contains(here));
+					} else {
+						assertTrue(adj.contains(here));
+						count++;
+					}
+				}
+				assertEquals(count, adj.size());
 			}
 		}
 	}

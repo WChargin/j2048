@@ -1,5 +1,8 @@
 package j2048;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A data structure representing a point on the grid. This point may or may not
  * contain a tile. This class is immutable.
@@ -86,6 +89,26 @@ public final class BoardLocation {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * Gets a list of all valid locations adjacent to this location. This is the
+	 * same as calling {@link #getAdjacentLocation(Direction)} for each
+	 * {@link Direction}, and only taking the non-{@code null} values.
+	 * 
+	 * @return a (possibly empty) list containing all valid board locations
+	 *         adjacent to this location
+	 */
+	public List<BoardLocation> getAllAdjacentLocations() {
+		final Direction[] directions = Direction.values();
+		final List<BoardLocation> result = new ArrayList<>();
+		for (Direction d : directions) {
+			BoardLocation adjacent = getAdjacentLocation(d);
+			if (adjacent != null) {
+				result.add(adjacent);
+			}
+		}
+		return result;
 	}
 
 	/**
