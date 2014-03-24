@@ -1,7 +1,10 @@
 package j2048;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A grid of tiles in a game of 2048.
@@ -37,6 +40,36 @@ public class TileGrid {
 			throw new IllegalArgumentException("location must not be null");
 		}
 		return tiles.get(location);
+	}
+
+	/**
+	 * Gets a list of all occupied locations in this tile grid. Modifications to
+	 * the returned list will not affect this grid.
+	 * 
+	 * @return a list of all occupied locations in this tile grid
+	 */
+	public List<BoardLocation> getAllOccupiedLocations() {
+		return new ArrayList<>(tiles.keySet());
+	}
+
+	/**
+	 * Gets a list of all unoccupied locations in this tile grid. Modifications
+	 * to the returned list will not affect this grid.
+	 * 
+	 * @return a list of all unoccupied locations in this tile grid
+	 */
+	public List<BoardLocation> getAllUnoccupiedLocations() {
+		List<BoardLocation> unoccupied = new ArrayList<>();
+		Set<BoardLocation> occupied = tiles.keySet();
+		for (int i = 0; i < BoardLocation.BOARD_SIZE; i++) {
+			for (int j = 0; j < BoardLocation.BOARD_SIZE; j++) {
+				BoardLocation loc = new BoardLocation(i, j);
+				if (!occupied.contains(loc)) {
+					unoccupied.add(loc);
+				}
+			}
+		}
+		return unoccupied;
 	}
 
 	/**

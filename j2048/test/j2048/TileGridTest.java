@@ -1,9 +1,12 @@
 package j2048;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -12,6 +15,65 @@ public class TileGridTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testAtNullLocation() {
 		new TileGrid().at(null);
+	}
+
+	@Test
+	public void testGetAllOccupiedLocations() {
+		TileGrid grid = new TileGrid();
+		assertEquals(0, grid.getAllOccupiedLocations().size());
+
+		Set<BoardLocation> occupied = new HashSet<>();
+		for (int i = 0; i < BoardLocation.BOARD_SIZE; i++) {
+			for (int j = 0; j < BoardLocation.BOARD_SIZE; j++) {
+				if (Math.random() > 0.5) {
+					BoardLocation loc = new BoardLocation(i, j);
+					occupied.add(loc);
+					grid.put(loc, new Tile());
+				}
+			}
+		}
+		for (int i = 0; i < BoardLocation.BOARD_SIZE; i++) {
+			for (int j = 0; j < BoardLocation.BOARD_SIZE; j++) {
+				if (Math.random() > 0.5) {
+					BoardLocation loc = new BoardLocation(i, j);
+					occupied.remove(loc);
+					grid.remove(loc);
+				}
+			}
+		}
+
+		assertEquals(occupied, new HashSet<>(grid.getAllOccupiedLocations()));
+	}
+
+	@Test
+	public void testGetAllUnoccupiedLocations() {
+		TileGrid grid = new TileGrid();
+		assertEquals(BoardLocation.BOARD_SIZE * BoardLocation.BOARD_SIZE, grid
+				.getAllUnoccupiedLocations().size());
+
+		Set<BoardLocation> unoccupied = new HashSet<>();
+		for (int i = 0; i < BoardLocation.BOARD_SIZE; i++) {
+			for (int j = 0; j < BoardLocation.BOARD_SIZE; j++) {
+				BoardLocation loc = new BoardLocation(i, j);
+				if (Math.random() > 0.5) {
+					unoccupied.add(loc);
+				} else {
+					grid.put(loc, new Tile());
+				}
+			}
+		}
+		for (int i = 0; i < BoardLocation.BOARD_SIZE; i++) {
+			for (int j = 0; j < BoardLocation.BOARD_SIZE; j++) {
+				BoardLocation loc = new BoardLocation(i, j);
+				if (Math.random() > 0.5) {
+					unoccupied.remove(loc);
+					grid.put(loc, new Tile());
+				}
+			}
+		}
+
+		assertEquals(unoccupied,
+				new HashSet<>(grid.getAllUnoccupiedLocations()));
 	}
 
 	@Test
@@ -85,5 +147,4 @@ public class TileGridTest {
 	public void testTileGrid() {
 		new TileGrid(); // no exceptions please
 	}
-
 }
