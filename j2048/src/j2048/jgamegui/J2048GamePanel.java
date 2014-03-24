@@ -1,12 +1,10 @@
 package j2048.jgamegui;
 
-import j2048.BoardLocation;
-
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.RoundRectangle2D;
+import java.awt.Font;
 
 import jgame.GContainer;
+import jgame.GMessage;
 
 /**
  * The main view for a game of 2048.
@@ -16,29 +14,63 @@ import jgame.GContainer;
  */
 public class J2048GamePanel extends GContainer {
 
+	/**
+	 * The message representing the user's current score.
+	 */
+	private final GMessage scoreValue;
+
+	/**
+	 * The message representing the user's best score.
+	 */
+	private final GMessage bestValue;
+
+	/**
+	 * The grid used in this game.
+	 */
+	private final J2048GridPanel grid;
+
 	public J2048GamePanel() {
-		setSize(500, 500);
+		setSize(500, 535);
+
+		final GMessage scoreLabel = createLabelMessage("Score");
+		addAt(scoreLabel, 25, 0);
+		scoreValue = createScoreMessage(0);
+		addAt(scoreValue, 125, 0);
+
+		final GMessage bestLabel = createLabelMessage("Best");
+		addAt(bestLabel, 275, 0);
+		bestValue = createScoreMessage(0);
+		addAt(bestValue, 375, 0);
+
+		grid = new J2048GridPanel();
+		grid.setAnchorTopLeft();
+		addAt(grid, 0, 35);
 	}
 
-	@Override
-	public void paint(Graphics2D g) {
-		final int gutter = 15;
-		final int side = BoardLocation.BOARD_SIZE;
-		final double width = (getWidth() - ((side + 1) * gutter)) / side;
-		final double height = (getHeight() - ((side + 1) * gutter)) / side;
-		final int radius = 3; // rounded corner radius
+	private GMessage createScoreMessage(int value) {
+		final GMessage score = new GMessage();
+		score.setColor(Color.WHITE);
+		score.setText(Integer.toString(value));
+		score.setSize(100, 50);
+		score.setFontSize(24);
+		score.setFontStyle(Font.BOLD);
+		score.setAlignmentX(0);
+		score.setAlignmentY(0.5);
+		score.setAnchorTopLeft();
+		return score;
+	}
 
-		g.setColor(new Color(228, 238, 218, 89));
-
-		for (int i = 0; i < side; i++) {
-			for (int j = 0; j < side; j++) {
-				RoundRectangle2D rr = new RoundRectangle2D.Double(gutter
-						+ (gutter + width) * i, gutter + (gutter + height) * j,
-						width, height, radius, radius);
-				g.fill(rr);
-			}
-		}
-		super.paint(g);
+	private static GMessage createLabelMessage(String text) {
+		final GMessage label = new GMessage();
+		label.setColor(J2048.LIGHT_COLOR);
+		label.setText(text.toUpperCase());
+		label.setSize(90, 50);
+		label.setFontSize(18);
+		label.setFontStyle(Font.BOLD);
+		label.setAlignmentX(1);
+		label.setAlignmentY(0.5);
+		label.setAnchorTopLeft();
+		return label;
 	}
 
 }
