@@ -12,7 +12,7 @@ import jgame.GMessage;
  * @author William Chargin
  * 
  */
-public class J2048GamePanel extends GContainer {
+public class GamePanel extends GContainer {
 
 	/**
 	 * The message representing the user's current score.
@@ -27,9 +27,9 @@ public class J2048GamePanel extends GContainer {
 	/**
 	 * The grid used in this game.
 	 */
-	private final J2048GridPanel grid;
+	private final GridPanel grid;
 
-	public J2048GamePanel() {
+	public GamePanel() {
 		setSize(500, 535);
 
 		final GMessage scoreLabel = createLabelMessage("Score");
@@ -42,7 +42,7 @@ public class J2048GamePanel extends GContainer {
 		bestValue = createScoreMessage(0);
 		addAt(bestValue, 375, 0);
 
-		grid = new J2048GridPanel();
+		grid = new GridPanel();
 		grid.setAnchorTopLeft();
 		addAt(grid, 0, 35);
 	}

@@ -14,9 +14,9 @@ import jgame.GContainer;
  * @author William Chargin
  * 
  */
-public class J2048GridPanel extends GContainer {
+public class GridPanel extends GContainer {
 
-	public J2048GridPanel() {
+	public GridPanel() {
 		setSize(500, 500);
 	}
 

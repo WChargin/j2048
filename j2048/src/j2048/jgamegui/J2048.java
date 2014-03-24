@@ -19,7 +19,7 @@ public class J2048 extends Game {
 	public J2048() {
 		GRootContainer root = new GRootContainer(MAIN_COLOR);
 		setRootContainer(root);
-		root.add(new J2048GamePanel());
+		root.add(new GamePanel());
 	}
 
 	public static void main(String[] args) {
