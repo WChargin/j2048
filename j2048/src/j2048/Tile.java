@@ -13,10 +13,21 @@ public class Tile {
 	 */
 	private int value;
 
+	/**
+	 * Gets the current value of this tile.
+	 * 
+	 * @return the tile value
+	 */
 	public int getValue() {
 		return value;
 	}
 
+	/**
+	 * Sets the value of this tile.
+	 * 
+	 * @param value
+	 *            the new tile value
+	 */
 	public void setValue(int value) {
 		this.value = value;
 	}
