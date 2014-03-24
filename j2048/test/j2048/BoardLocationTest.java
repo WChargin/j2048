@@ -1,8 +1,11 @@
 package j2048;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -184,7 +187,7 @@ public class BoardLocationTest {
 		for (int i = 0; i < BoardLocation.BOARD_SIZE; i++) {
 			for (int j = 0; j < BoardLocation.BOARD_SIZE; j++) {
 				final BoardLocation loc = new BoardLocation(i, j);
-				final List<BoardLocation> adj = loc.getAllAdjacentLocations();
+				final Set<BoardLocation> adj = loc.getAllAdjacentLocations();
 
 				int count = 0;
 				for (Direction dir : directions) {

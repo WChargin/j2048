@@ -1,7 +1,7 @@
 package j2048;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A data structure representing a point on the grid. This point may or may not
@@ -92,16 +92,16 @@ public final class BoardLocation {
 	}
 
 	/**
-	 * Gets a list of all valid locations adjacent to this location. This is the
+	 * Gets a set of all valid locations adjacent to this location. This is the
 	 * same as calling {@link #getAdjacentLocation(Direction)} for each
 	 * {@link Direction}, and only taking the non-{@code null} values.
 	 * 
-	 * @return a (possibly empty) list containing all valid board locations
+	 * @return a (possibly empty) set containing all valid board locations
 	 *         adjacent to this location
 	 */
-	public List<BoardLocation> getAllAdjacentLocations() {
+	public Set<BoardLocation> getAllAdjacentLocations() {
 		final Direction[] directions = Direction.values();
-		final List<BoardLocation> result = new ArrayList<>();
+		final Set<BoardLocation> result = new HashSet<>();
 		for (Direction d : directions) {
 			BoardLocation adjacent = getAdjacentLocation(d);
 			if (adjacent != null) {

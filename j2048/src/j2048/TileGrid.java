@@ -1,8 +1,7 @@
 package j2048;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,23 +42,23 @@ public class TileGrid {
 	}
 
 	/**
-	 * Gets a list of all occupied locations in this tile grid. Modifications to
-	 * the returned list will not affect this grid.
+	 * Gets a set of all occupied locations in this tile grid. Modifications to
+	 * the returned set will not affect this grid.
 	 * 
-	 * @return a list of all occupied locations in this tile grid
+	 * @return a set of all occupied locations in this tile grid
 	 */
-	public List<BoardLocation> getAllOccupiedLocations() {
-		return new ArrayList<>(tiles.keySet());
+	public Set<BoardLocation> getAllOccupiedLocations() {
+		return new HashSet<>(tiles.keySet());
 	}
 
 	/**
-	 * Gets a list of all unoccupied locations in this tile grid. Modifications
-	 * to the returned list will not affect this grid.
+	 * Gets a set of all unoccupied locations in this tile grid. Modifications
+	 * to the returned set will not affect this grid.
 	 * 
-	 * @return a list of all unoccupied locations in this tile grid
+	 * @return a set of all unoccupied locations in this tile grid
 	 */
-	public List<BoardLocation> getAllUnoccupiedLocations() {
-		List<BoardLocation> unoccupied = new ArrayList<>();
+	public Set<BoardLocation> getAllUnoccupiedLocations() {
+		Set<BoardLocation> unoccupied = new HashSet<>();
 		Set<BoardLocation> occupied = tiles.keySet();
 		for (int i = 0; i < BoardLocation.BOARD_SIZE; i++) {
 			for (int j = 0; j < BoardLocation.BOARD_SIZE; j++) {
