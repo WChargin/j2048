@@ -7,8 +7,10 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.RoundRectangle2D;
 
+import jgame.Context;
 import jgame.GMessage;
 import jgame.GObject;
+import jgame.listener.FrameListener;
 
 /**
  * A GUI component representing a {@link Tile} in a game of 2048.
@@ -22,6 +24,11 @@ public class TileView extends GObject {
 	 * The tile represented by this view.
 	 */
 	private final Tile tile;
+
+	/**
+	 * The message with the text of this tile.
+	 */
+	private final GMessage label;
 
 	/**
 	 * The colors for the tile values.
@@ -49,36 +56,19 @@ public class TileView extends GObject {
 		super();
 		this.tile = tile;
 
-		GMessage message = new GMessage() {
+		label = new GMessage();
+		label.setAlignmentX(0.5);
+		label.setAlignmentY(0.5);
+		label.setFontStyle(Font.BOLD);
+		label.setAnchorTopLeft();
+		add(label);
+
+		addListener(new FrameListener() {
 			@Override
-			public double getHeight() {
-				return TileView.this.getHeight();
+			public void invoke(GObject target, Context context) {
+				updateLabel();
 			}
-
-			@Override
-			public double getWidth() {
-				return TileView.this.getWidth();
-			}
-		};
-		final int tileValue = tile.getValue();
-		message.setText(Integer.toString(tileValue));
-		if (tileValue >= 8) {
-			message.setColor(Color.WHITE);
-		} else {
-			message.setColor(J2048.MAIN_COLOR);
-		}
-
-		message.setFontSize(50);
-		if (tileValue >= 100 && tileValue < 1000) {
-			message.setFontSize(45);
-		} else if (tileValue >= 1000) {
-			message.setFontSize(35);
-		}
-
-		message.setAlignmentX(0.5);
-		message.setAlignmentY(0.5);
-		message.setFontStyle(Font.BOLD);
-		addAtCenter(message);
+		});
 	}
 
 	@Override
@@ -96,5 +86,28 @@ public class TileView extends GObject {
 		g.fill(rr);
 
 		super.paint(g);
+	}
+
+	/**
+	 * Updates the contents of the {@link #label} field to reflect the most
+	 * recent values.
+	 */
+	private void updateLabel() {
+		label.setSize(getWidth(), getHeight());
+
+		final int tileValue = tile.getValue();
+		label.setText(Integer.toString(tileValue));
+		if (tileValue >= 8) {
+			label.setColor(Color.WHITE);
+		} else {
+			label.setColor(J2048.MAIN_COLOR);
+		}
+		label.setFontSize(50);
+		if (tileValue >= 100 && tileValue < 1000) {
+			label.setFontSize(45);
+		} else if (tileValue >= 1000) {
+			label.setFontSize(35);
+		}
+
 	}
 }
