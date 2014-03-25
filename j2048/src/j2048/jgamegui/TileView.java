@@ -10,6 +10,12 @@ import java.awt.geom.RoundRectangle2D;
 import jgame.GMessage;
 import jgame.GObject;
 
+/**
+ * A GUI component representing a {@link Tile} in a game of 2048.
+ * 
+ * @author William Chargin
+ * 
+ */
 public class TileView extends GObject {
 
 	/**
@@ -17,6 +23,9 @@ public class TileView extends GObject {
 	 */
 	private final Tile tile;
 
+	/**
+	 * The colors for the tile values.
+	 */
 	private static final Color[] colors = new Color[11];
 	static {
 		final int[] hexes = { 0xeee4da, 0xede0c8, 0xf2b179, 0xf59563, 0xf67c5f,
@@ -30,19 +39,25 @@ public class TileView extends GObject {
 		}
 	}
 
+	/**
+	 * Creates a view for the given tile.
+	 * 
+	 * @param tile
+	 *            the tile to be represented in this view
+	 */
 	public TileView(Tile tile) {
 		super();
 		this.tile = tile;
 
 		GMessage message = new GMessage() {
 			@Override
-			public double getWidth() {
-				return TileView.this.getWidth();
+			public double getHeight() {
+				return TileView.this.getHeight();
 			}
 
 			@Override
-			public double getHeight() {
-				return TileView.this.getHeight();
+			public double getWidth() {
+				return TileView.this.getWidth();
 			}
 		};
 		final int tileValue = tile.getValue();
@@ -68,7 +83,6 @@ public class TileView extends GObject {
 
 	@Override
 	public void paint(Graphics2D g) {
-
 		int index = 0, power = 2;
 		final int tileValue = tile.getValue();
 		while (power < tileValue && index + 1 < colors.length) {
