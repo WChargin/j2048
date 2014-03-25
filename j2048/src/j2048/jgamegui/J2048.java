@@ -14,6 +14,7 @@ import jgame.Game;
 public class J2048 extends Game {
 
 	public static final Color MAIN_COLOR = new Color(187, 173, 160);
+	public static final Color TEXT_COLOR = new Color(119, 110, 101);
 	public static final Color LIGHT_COLOR = new Color(250, 248, 239);
 
 	public J2048() {

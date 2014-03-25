@@ -30,21 +30,31 @@ public class GamePanel extends GContainer {
 	private final GridPanel grid;
 
 	public GamePanel() {
-		setSize(500, 535);
+		setSize(500, 600);
+
+		final GMessage title = new GMessage("2048");
+		title.setColor(J2048.TEXT_COLOR);
+		title.setSize(250, 100);
+		title.setAnchorTopLeft();
+		title.setAlignmentX(0.5);
+		title.setAlignmentY(0.5);
+		title.setFontSize(72);
+		title.setFontStyle(Font.BOLD);
+		add(title);
 
 		final GMessage scoreLabel = createLabelMessage("Score");
-		addAt(scoreLabel, 25, 0);
+		addAt(scoreLabel, 300, 0);
 		scoreValue = createScoreMessage(0);
-		addAt(scoreValue, 125, 0);
+		addAt(scoreValue, 400, 0);
 
 		final GMessage bestLabel = createLabelMessage("Best");
-		addAt(bestLabel, 275, 0);
+		addAt(bestLabel, 300, 50);
 		bestValue = createScoreMessage(0);
-		addAt(bestValue, 375, 0);
+		addAt(bestValue, 400, 50);
 
 		grid = new GridPanel();
 		grid.setAnchorTopLeft();
-		addAt(grid, 0, 35);
+		addAt(grid, 0, 100);
 	}
 
 	private GMessage createScoreMessage(int value) {
