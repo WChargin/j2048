@@ -2,6 +2,7 @@ package j2048.jgamegui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
 
 import jgame.GContainer;
 import jgame.GMessage;
@@ -17,12 +18,12 @@ public class GamePanel extends GContainer {
 	/**
 	 * The message representing the user's current score.
 	 */
-	private final GMessage scoreValue;
+	private final ScoreDisplay scoreValue;
 
 	/**
 	 * The message representing the user's best score.
 	 */
-	private final GMessage bestValue;
+	private final ScoreDisplay bestValue;
 
 	/**
 	 * The grid used in this game.
@@ -42,45 +43,65 @@ public class GamePanel extends GContainer {
 		title.setFontStyle(Font.BOLD);
 		add(title);
 
-		final GMessage scoreLabel = createLabelMessage("Score");
-		addAt(scoreLabel, 300, 0);
-		scoreValue = createScoreMessage(0);
-		addAt(scoreValue, 400, 0);
-
-		final GMessage bestLabel = createLabelMessage("Best");
-		addAt(bestLabel, 300, 50);
-		bestValue = createScoreMessage(0);
-		addAt(bestValue, 400, 50);
+		addAt(scoreValue = new ScoreDisplay("Score"), 275, 10);
+		addAt(bestValue = new ScoreDisplay("Best"), 275, 55);
 
 		grid = new GridPanel();
 		grid.setAnchorTopLeft();
 		addAt(grid, 0, 100);
 	}
 
-	private GMessage createScoreMessage(int value) {
-		final GMessage score = new GMessage();
-		score.setColor(Color.WHITE);
-		score.setText(Integer.toString(value));
-		score.setSize(100, 50);
-		score.setFontSize(24);
-		score.setFontStyle(Font.BOLD);
-		score.setAlignmentX(0);
-		score.setAlignmentY(0.5);
-		score.setAnchorTopLeft();
-		return score;
-	}
+	private static class ScoreDisplay extends GContainer {
 
-	private static GMessage createLabelMessage(String text) {
-		final GMessage label = new GMessage();
-		label.setColor(J2048.LIGHT_COLOR);
-		label.setText(text.toUpperCase());
-		label.setSize(90, 50);
-		label.setFontSize(18);
-		label.setFontStyle(Font.BOLD);
-		label.setAlignmentX(1);
-		label.setAlignmentY(0.5);
-		label.setAnchorTopLeft();
-		return label;
+		private final GMessage score;
+
+		public ScoreDisplay(String title) {
+			setAnchorTopLeft();
+			setSize(150, 30);
+			GMessage label = createLabelMessage(title);
+			addAt(label, 0, 0);
+
+			score = createScoreMessage(0);
+			addAt(score, 100, 0);
+		}
+
+		@Override
+		public void paint(Graphics2D g) {
+			g.setColor(J2048.MAIN_COLOR);
+			g.fillRoundRect(0, 0, getIntWidth(), getIntHeight(), 3, 3);
+			super.paint(g);
+		}
+
+		public void setScore(int newScore) {
+			score.setText(Integer.toString(newScore));
+		}
+
+		private static GMessage createScoreMessage(int value) {
+			final GMessage score = new GMessage();
+			score.setColor(Color.WHITE);
+			score.setText(Integer.toString(value));
+			score.setSize(100, 30);
+			score.setFontSize(24);
+			score.setFontStyle(Font.BOLD);
+			score.setAlignmentX(0);
+			score.setAlignmentY(0.5);
+			score.setAnchorTopLeft();
+			return score;
+		}
+
+		private static GMessage createLabelMessage(String text) {
+			final GMessage label = new GMessage();
+			label.setColor(J2048.LIGHT_TEXT);
+			label.setText(text.toUpperCase());
+			label.setSize(90, 30);
+			label.setFontSize(18);
+			label.setFontStyle(Font.BOLD);
+			label.setAlignmentX(1);
+			label.setAlignmentY(0.5);
+			label.setAnchorTopLeft();
+			return label;
+		}
+
 	}
 
 }

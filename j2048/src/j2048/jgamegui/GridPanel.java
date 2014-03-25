@@ -22,6 +22,9 @@ public class GridPanel extends GContainer {
 
 	@Override
 	public void paint(Graphics2D g) {
+		g.setColor(J2048.MAIN_COLOR);
+		g.fillRoundRect(0, 0, getIntWidth(), getIntHeight(), 6, 6);
+
 		final int gutter = 15;
 		final int side = BoardLocation.BOARD_SIZE;
 		final double width = (getWidth() - ((side + 1) * gutter)) / side;
