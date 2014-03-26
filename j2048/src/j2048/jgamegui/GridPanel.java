@@ -28,7 +28,7 @@ public class GridPanel extends GContainer {
 	/**
 	 * The number of frames in a turn. This should be an even number.
 	 */
-	private static final int TURN_DURATION = 10;
+	public static final int TURN_DURATION = 10;
 
 	/**
 	 * The gutter between grid cells.
@@ -70,6 +70,7 @@ public class GridPanel extends GContainer {
 				+ (height) / 2;
 		addAt(view, x, y);
 
+		view.setScale(0);
 		view.addController(new ScaleTween(TURN_DURATION, 0, 1));
 
 		views.put(tile, view);
