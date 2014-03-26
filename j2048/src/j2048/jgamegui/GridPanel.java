@@ -111,11 +111,12 @@ public class GridPanel extends GContainer {
 	 *            the tile to move
 	 * @param direction
 	 *            the direction in which to move the tile
+	 * @param count
 	 */
-	public void moveTile(Tile tile, Direction direction) {
+	public void moveTile(Tile tile, Direction direction, int count) {
 		final TileView tileView = views.get(tile);
-		final double dx = tileView.getWidth() + GUTTER;
-		final double dy = tileView.getHeight() + GUTTER;
+		final double dx = (tileView.getWidth() + GUTTER) * count;
+		final double dy = (tileView.getHeight() + GUTTER) * count;
 
 		tileView.addController(new MovementTween(TURN_DURATION, dx
 				* direction.getX(), dy * direction.getY()));

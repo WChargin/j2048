@@ -1,11 +1,24 @@
 package j2048.jgamegui;
 
+import j2048.BoardLocation;
+import j2048.Direction;
+import j2048.Logic;
+import j2048.Tile;
+import j2048.TileGameContext;
+import j2048.TileGrid;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.util.Iterator;
+import java.util.Set;
 
+import jgame.Context;
 import jgame.GContainer;
 import jgame.GMessage;
+import jgame.GObject;
+import jgame.listener.FrameListener;
 
 /**
  * The main view for a game of 2048.
@@ -120,6 +133,11 @@ public class GamePanel extends GContainer {
 	}
 
 	/**
+	 * The tile grid used in this game.
+	 */
+	private final TileGrid gridData = new TileGrid();
+
+	/**
 	 * The message representing the user's current score.
 	 */
 	private final ScoreDisplay scoreValue;
@@ -153,6 +171,148 @@ public class GamePanel extends GContainer {
 		grid = new GridPanel();
 		grid.setAnchorTopLeft();
 		addAt(grid, 0, 100);
+
+		final TileGameContext tgc = new TileGameContext() {
+
+			@Override
+			public void addTile(Tile tile, BoardLocation location)
+					throws IllegalArgumentException {
+				if (tile == null) {
+					throw new IllegalArgumentException("tile must not be null");
+				}
+				if (location == null) {
+					throw new IllegalArgumentException(
+							"location must not be null");
+				}
+				grid.addTileAt(tile, location);
+				gridData.put(location, tile);
+			}
+
+			@Override
+			public TileGrid getGrid() {
+				return gridData;
+			}
+
+			@Override
+			public int getScore() {
+				return scoreValue.getScore();
+			}
+
+			@Override
+			public int incrementScoreBy(int value) {
+				int newScore = getScore() + value;
+				setScore(newScore);
+				return newScore;
+			}
+
+			@Override
+			public void loseGame() {
+				System.out.println("you lose"); // TODO
+			}
+
+			@Override
+			public void mergeTiles(Tile target, Tile mover,
+					Direction direction, int newValue)
+					throws IllegalArgumentException {
+				if (target == null) {
+					throw new IllegalArgumentException("tile must not be null");
+				}
+				if (mover == null) {
+					throw new IllegalArgumentException("tile must not be null");
+				}
+				if (direction == null) {
+					throw new IllegalArgumentException(
+							"direction must not be null");
+				}
+				grid.moveTile(mover, direction, 1);
+				grid.mergeTile(target, newValue, mover);
+
+			}
+
+			@Override
+			public void moveTile(Tile tile, Direction direction, int count)
+					throws IllegalArgumentException {
+				if (tile == null) {
+					throw new IllegalArgumentException("tile must not be null");
+				}
+				if (direction == null) {
+					throw new IllegalArgumentException(
+							"direction must not be null");
+				}
+				BoardLocation loc = gridData.find(tile);
+				if (loc == null) {
+					throw new IllegalArgumentException("tile must be in grid");
+				}
+				grid.moveTile(tile, direction, count);
+				for (int i = 0; i < count; i++) {
+					loc = loc.getAdjacentLocation(direction);
+				}
+				gridData.put(loc, tile);
+				gridData.remove(loc);
+			}
+
+			@Override
+			public void setScore(int score) throws IllegalArgumentException {
+				GamePanel.this.setScore(score);
+			}
+
+			@Override
+			public void winGame() {
+				System.out.println("you win"); // TODO
+			}
+		};
+		for (int i = 0; i < 2; i++) {
+			Tile t = new Tile();
+			t.setValue(2);
+			final Set<BoardLocation> free = gridData
+					.getAllUnoccupiedLocations();
+			int index = (int) (Math.random() * free.size());
+			Iterator<BoardLocation> it = free.iterator();
+			for (int j = 0; j < index - 1; j++) {
+				it.next();
+			}
+			tgc.addTile(t, it.next());
+		}
+		addListener(new FrameListener() {
+
+			private int tick = 0;
+			private Direction lastDir = null;
+
+			@Override
+			public void invoke(GObject target, Context context) {
+				Direction dir = null;
+				for (int key : context.getKeyCodesPressed()) {
+					switch (key) {
+					case KeyEvent.VK_LEFT:
+						dir = Direction.WEST;
+						break;
+					case KeyEvent.VK_RIGHT:
+						dir = Direction.EAST;
+						break;
+					case KeyEvent.VK_UP:
+						dir = Direction.NORTH;
+						break;
+					case KeyEvent.VK_DOWN:
+						dir = Direction.SOUTH;
+						break;
+					default:
+						continue;
+					}
+				}
+				if (dir == null) {
+					lastDir = dir;
+				} else if (dir == lastDir) {
+					return;
+				}
+				lastDir = dir;
+				if (dir != null && tick == 0) {
+					new Logic().turn(dir, tgc);
+					tick = GridPanel.TURN_DURATION;
+				} else if (tick > 0) {
+					tick--;
+				}
+			}
+		});
 	}
 
 	/**

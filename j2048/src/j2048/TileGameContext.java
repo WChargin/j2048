@@ -68,11 +68,13 @@ public interface TileGameContext {
 	 *            the tile that will move onto the target tile
 	 * @param direction
 	 *            the direction of movement
+	 * @param newValue
+	 *            the new value of the {@code target} tile
 	 * @throws IllegalArgumentException
 	 *             if any argument is {@code null}
 	 */
-	public void mergeTiles(Tile target, Tile mover, Direction direction)
-			throws IllegalArgumentException;
+	public void mergeTiles(Tile target, Tile mover, Direction direction,
+			int newValue) throws IllegalArgumentException;
 
 	/**
 	 * Moves the given tile in the given direction. If another tile is in the
@@ -83,11 +85,13 @@ public interface TileGameContext {
 	 *            the tile to move
 	 * @param direction
 	 *            the direction in which to move the tile
+	 * @param count
+	 *            the number of spaces to move the tile
 	 * @throws IllegalArgumentException
 	 *             if the tile cannot be moved in the given direction (or either
 	 *             argument is {@code null})
 	 */
-	public void moveTile(Tile tile, Direction direction)
+	public void moveTile(Tile tile, Direction direction, int count)
 			throws IllegalArgumentException;
 
 	/**
