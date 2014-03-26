@@ -11,6 +11,27 @@ package j2048;
 public interface TileGameContext {
 
 	/**
+	 * Adds the given tile to the game at the given location.
+	 * 
+	 * @param tile
+	 *            the tile to add
+	 * @param location
+	 *            the location at which to add the tile
+	 * @throws IllegalArgumentException
+	 *             if either argument is {@code null}
+	 */
+	public void addTile(Tile tile, BoardLocation location)
+			throws IllegalArgumentException;
+
+	/**
+	 * Gets the grid for this game. Modifications to the grid are not advised;
+	 * instead, use the mutator methods of this object.
+	 * 
+	 * @return the game grid
+	 */
+	public TileGrid getGrid();
+
+	/**
 	 * Gets the user's score in the game. This can be modified with
 	 * {@link #incrementScoreBy(int)} or {@link #setScore(int)}.
 	 * 
@@ -34,6 +55,42 @@ public interface TileGameContext {
 	public int incrementScoreBy(int value);
 
 	/**
+	 * Causes the user to lose the game.
+	 */
+	public void loseGame();
+
+	/**
+	 * Merges the mover tile onto the target tile.
+	 * 
+	 * @param target
+	 *            the tile that will remain after the merge is completed
+	 * @param mover
+	 *            the tile that will move onto the target tile
+	 * @param direction
+	 *            the direction of movement
+	 * @throws IllegalArgumentException
+	 *             if any argument is {@code null}
+	 */
+	public void mergeTiles(Tile target, Tile mover, Direction direction)
+			throws IllegalArgumentException;
+
+	/**
+	 * Moves the given tile in the given direction. If another tile is in the
+	 * destination cell, it will be removed. If the provided movement is
+	 * impossible, the method may throw an exception.
+	 * 
+	 * @param tile
+	 *            the tile to move
+	 * @param direction
+	 *            the direction in which to move the tile
+	 * @throws IllegalArgumentException
+	 *             if the tile cannot be moved in the given direction (or either
+	 *             argument is {@code null})
+	 */
+	public void moveTile(Tile tile, Direction direction)
+			throws IllegalArgumentException;
+
+	/**
 	 * Sets the user's score to the given value.
 	 * 
 	 * @param score
@@ -45,8 +102,8 @@ public interface TileGameContext {
 	public void setScore(int score) throws IllegalArgumentException;
 
 	/**
-	 * Ends the game immediately.
+	 * Causes the user to win the game.
 	 */
-	public void endGame();
+	public void winGame();
 
 }
