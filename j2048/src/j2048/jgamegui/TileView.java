@@ -31,6 +31,11 @@ public class TileView extends GObject {
 	private final GMessage label;
 
 	/**
+	 * The rounded-rectangle corner radius for cells.
+	 */
+	public static final int CORNER_RADIUS = 3;
+
+	/**
 	 * The colors for the tile values.
 	 */
 	private static final Color[] colors = new Color[11];
@@ -71,6 +76,15 @@ public class TileView extends GObject {
 		});
 	}
 
+	/**
+	 * Gets the tile represented by this {@code TileView}.
+	 * 
+	 * @return the relevant tile
+	 */
+	public Tile getTile() {
+		return tile;
+	}
+
 	@Override
 	public void paint(Graphics2D g) {
 		int index = 0, power = 2;
@@ -100,7 +114,7 @@ public class TileView extends GObject {
 		if (tileValue >= 8) {
 			label.setColor(Color.WHITE);
 		} else {
-			label.setColor(J2048.MAIN_COLOR);
+			label.setColor(J2048.TEXT_COLOR);
 		}
 		label.setFontSize(50);
 		if (tileValue >= 100 && tileValue < 1000) {

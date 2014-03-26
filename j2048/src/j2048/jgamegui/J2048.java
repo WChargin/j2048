@@ -13,16 +13,18 @@ import jgame.Game;
  * 
  */
 public class J2048 extends Game {
-	
+
 	public static final Color MAIN_COLOR = new Color(187, 173, 160);
 	public static final Color TEXT_COLOR = new Color(119, 110, 101);
 	public static final Color LIGHT_COLOR = new Color(250, 248, 239);
 	public static final Color LIGHT_TEXT = new Color(238, 228, 218);
 
 	public J2048() {
+		setTargetFPS(60);
+
 		GRootContainer root = new GRootContainer(LIGHT_COLOR);
 		setRootContainer(root);
-		
+
 		GContainer container = new GContainer();
 		GamePanel game = new GamePanel();
 		container.setSize(game.getWidth() + 50, game.getHeight() + 50);
