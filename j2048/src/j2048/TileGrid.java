@@ -42,6 +42,28 @@ public class TileGrid {
 	}
 
 	/**
+	 * Finds the location of the tile in the grid.
+	 * 
+	 * @param tile
+	 *            the tile to find
+	 * @return the location of the tile, or {@code null} if the tile is not in
+	 *         the grid
+	 * @throws IllegalArgumentException
+	 *             if {@code tile == null}
+	 */
+	public BoardLocation find(Tile tile) throws IllegalArgumentException {
+		if (tile == null) {
+			throw new IllegalArgumentException("tile must not be null");
+		}
+		for (Map.Entry<BoardLocation, Tile> entry : tiles.entrySet()) {
+			if (entry.getValue() == tile) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Gets a set of all occupied locations in this tile grid. Modifications to
 	 * the returned set will not affect this grid.
 	 * 

@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.junit.Test;
@@ -15,6 +16,34 @@ public class TileGridTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testAtNullLocation() {
 		new TileGrid().at(null);
+	}
+
+	@Test
+	public void testFind() {
+		final TileGrid grid = new TileGrid();
+		final Map<Tile, BoardLocation> correct = new HashMap<>();
+		final Random r = new Random();
+		for (int i = 0; i < 10000; i++) {
+			Tile tile = new Tile();
+			tile.setValue(4);
+			BoardLocation location = new BoardLocation(
+					r.nextInt(BoardLocation.BOARD_SIZE),
+					r.nextInt(BoardLocation.BOARD_SIZE));
+			Tile previous = grid.at(location);
+			if (previous != null) {
+				correct.remove(previous);
+			}
+			grid.put(location, tile);
+			correct.put(tile, location);
+			for (Map.Entry<Tile, BoardLocation> entry : correct.entrySet()) {
+				assertEquals(entry.getValue(), grid.find(entry.getKey()));
+			}
+		}
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testFindNull() {
+		new TileGrid().find(null);
 	}
 
 	@Test
