@@ -224,8 +224,9 @@ public class GamePanel extends GContainer {
 					throw new IllegalArgumentException(
 							"direction must not be null");
 				}
-				grid.mergeTile(target, mover, direction, movementSteps, newValue);
-
+				grid.mergeTile(target, mover, direction, movementSteps,
+						newValue);
+				moveTile(mover, direction, movementSteps);
 			}
 
 			@Override
@@ -243,11 +244,15 @@ public class GamePanel extends GContainer {
 					throw new IllegalArgumentException("tile must be in grid");
 				}
 				grid.moveTile(tile, direction, count);
+				gridData.remove(loc);
 				for (int i = 0; i < count; i++) {
 					loc = loc.getAdjacentLocation(direction);
+					if (loc == null) {
+						throw new IllegalArgumentException(
+								"Trying to move too far: " + count);
+					}
 				}
 				gridData.put(loc, tile);
-				gridData.remove(loc);
 			}
 
 			@Override
