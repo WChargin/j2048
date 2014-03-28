@@ -18,6 +18,8 @@ import jgame.Context;
 import jgame.GContainer;
 import jgame.GMessage;
 import jgame.GObject;
+import jgame.controller.AlphaTween;
+import jgame.listener.ButtonListener;
 import jgame.listener.FrameListener;
 
 /**
@@ -152,6 +154,8 @@ public class GamePanel extends GContainer {
 	 */
 	private final GridPanel grid;
 
+	private TileGameContext tgc;
+
 	public GamePanel() {
 		setSize(500, 600);
 
@@ -172,7 +176,44 @@ public class GamePanel extends GContainer {
 		grid.setAnchorTopLeft();
 		addAt(grid, 0, 100);
 
-		final TileGameContext tgc = new TileGameContext() {
+		final Runnable spawnTwo = new Runnable() {
+			@Override
+			public void run() {
+				for (int i = 0; i < 2; i++) {
+					Tile t = new Tile();
+					t.setValue(2);
+					final Set<BoardLocation> free = gridData
+							.getAllUnoccupiedLocations();
+					int index = (int) (Math.random() * free.size());
+					Iterator<BoardLocation> it = free.iterator();
+					for (int j = 0; j < index - 1; j++) {
+						it.next();
+					}
+					tgc.addTile(t, it.next());
+				}
+			}
+		};
+		tgc = new TileGameContext() {
+
+			private void doReplay(Color color, String message) {
+				final AlphaTween in = new AlphaTween(30, 0, 1);
+				final ReplayPanel panel = new ReplayPanel(color, message,
+						new ButtonListener() {
+							@Override
+							public void mouseClicked(Context context) {
+								for (BoardLocation loc : gridData
+										.getAllOccupiedLocations()) {
+									Tile t = gridData.at(loc);
+									grid.removeTile(t);
+									gridData.remove(loc);
+								}
+								spawnTwo.run();
+							}
+						});
+				panel.setAlpha(0);
+				panel.addController(in);
+				addSibling(panel);
+			}
 
 			@Override
 			public void addTile(Tile tile, BoardLocation location)
@@ -207,7 +248,7 @@ public class GamePanel extends GContainer {
 
 			@Override
 			public void loseGame() {
-				System.out.println("you lose"); // TODO
+				doReplay(Color.RED, "Game over!");
 			}
 
 			@Override
@@ -263,21 +304,10 @@ public class GamePanel extends GContainer {
 
 			@Override
 			public void winGame() {
-				System.out.println("you win"); // TODO
+				doReplay(Color.GREEN, "You win!");
 			}
 		};
-		for (int i = 0; i < 2; i++) {
-			Tile t = new Tile();
-			t.setValue(2);
-			final Set<BoardLocation> free = gridData
-					.getAllUnoccupiedLocations();
-			int index = (int) (Math.random() * free.size());
-			Iterator<BoardLocation> it = free.iterator();
-			for (int j = 0; j < index - 1; j++) {
-				it.next();
-			}
-			tgc.addTile(t, it.next());
-		}
+		spawnTwo.run();
 		addListener(new FrameListener() {
 
 			private int tick = 0;
@@ -318,6 +348,7 @@ public class GamePanel extends GContainer {
 				}
 			}
 		});
+
 	}
 
 	/**
