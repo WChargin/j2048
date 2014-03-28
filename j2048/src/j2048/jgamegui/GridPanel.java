@@ -28,7 +28,7 @@ public class GridPanel extends GContainer {
 	/**
 	 * The number of frames in a turn. This should be an even number.
 	 */
-	public static final int TURN_DURATION = 10;
+	public static final int TURN_DURATION = 6;
 
 	/**
 	 * The gutter between grid cells.
@@ -89,11 +89,11 @@ public class GridPanel extends GContainer {
 		scale.chain(new ScaleTween(TURN_DURATION / 2, 1.2, 1.0));
 		vm.addController(scale);
 
+		vm.getTile().setValue(newValue);
 		vm.addListener(new DelayListener(TURN_DURATION / 2) {
 			@Override
 			public void invoke(GObject t, Context context) {
 				vm.removeListener(this);
-				vm.getTile().setValue(newValue);
 				removeTile(target);
 			}
 		});

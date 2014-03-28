@@ -224,6 +224,7 @@ public class GamePanel extends GContainer {
 					throw new IllegalArgumentException(
 							"direction must not be null");
 				}
+				mover.setValue(newValue);
 				grid.mergeTile(target, mover, direction, movementSteps,
 						newValue);
 				moveTile(mover, direction, movementSteps);
