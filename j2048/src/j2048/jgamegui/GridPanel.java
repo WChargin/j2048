@@ -28,7 +28,7 @@ public class GridPanel extends GContainer {
 	/**
 	 * The number of frames in a turn. This should be an even number.
 	 */
-	public static final int TURN_DURATION = 10;
+	public static final int TURN_DURATION = 6;
 
 	/**
 	 * The gutter between grid cells.
@@ -78,28 +78,23 @@ public class GridPanel extends GContainer {
 		return view;
 	}
 
-	/**
-	 * Performs a tile-move animation on the given tile, setting the tile's
-	 * value to the given value when the animation has completed. Note that the
-	 * other half of the merge must be removed manually.
-	 * 
-	 * @param t1
-	 *            the tile to be merged
-	 * @param t2
-	 *            the tile to be deleted
-	 * @param newValue
-	 *            the new value of the tile
-	 */
-	public void mergeTile(final Tile t1, final int newValue, final Tile t2) {
-		final TileView tileView = views.get(t1);
-		final ScaleTween tween = new ScaleTween(TURN_DURATION / 2, 1.0, 1.2);
-		tween.chain(new ScaleTween(TURN_DURATION / 2, 1.2, 1.0));
-		tileView.addController(tween);
-		tileView.addListener(new DelayListener(TURN_DURATION / 2) {
+	public void mergeTile(final Tile target, final Tile mover,
+			final Direction direction, final int movementSteps,
+			final int newValue) {
+		final TileView vm = views.get(mover);
+
+		moveTile(mover, direction, movementSteps);
+
+		final ScaleTween scale = new ScaleTween(TURN_DURATION / 2, 1.0, 1.2);
+		scale.chain(new ScaleTween(TURN_DURATION / 2, 1.2, 1.0));
+		vm.addController(scale);
+
+		vm.getTile().setValue(newValue);
+		vm.addListener(new DelayListener(TURN_DURATION / 2) {
 			@Override
-			public void invoke(GObject target, Context context) {
-				tileView.getTile().setValue(newValue);
-				removeTile(t2);
+			public void invoke(GObject t, Context context) {
+				vm.removeListener(this);
+				removeTile(target);
 			}
 		});
 	}

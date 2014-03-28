@@ -63,18 +63,20 @@ public interface TileGameContext {
 	 * Merges the mover tile onto the target tile.
 	 * 
 	 * @param target
-	 *            the tile that will remain after the merge is completed
+	 *            the tile that will disappear after the merge is completed
 	 * @param mover
 	 *            the tile that will move onto the target tile
 	 * @param direction
 	 *            the direction of movement
+	 * @param movementSteps
+	 *            the number of steps the mover tile should move
 	 * @param newValue
 	 *            the new value of the {@code target} tile
 	 * @throws IllegalArgumentException
 	 *             if any argument is {@code null}
 	 */
 	public void mergeTiles(Tile target, Tile mover, Direction direction,
-			int newValue) throws IllegalArgumentException;
+			int movementSteps, int newValue) throws IllegalArgumentException;
 
 	/**
 	 * Moves the given tile in the given direction. If another tile is in the
