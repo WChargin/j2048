@@ -212,7 +212,7 @@ public class GamePanel extends GContainer {
 
 			@Override
 			public void mergeTiles(Tile target, Tile mover,
-					Direction direction, int newValue)
+					Direction direction, int movementSteps, int newValue)
 					throws IllegalArgumentException {
 				if (target == null) {
 					throw new IllegalArgumentException("tile must not be null");
@@ -224,8 +224,7 @@ public class GamePanel extends GContainer {
 					throw new IllegalArgumentException(
 							"direction must not be null");
 				}
-				grid.moveTile(mover, direction, 1);
-				grid.mergeTile(target, newValue, mover);
+				grid.mergeTile(target, mover, direction, movementSteps, newValue);
 
 			}
 
