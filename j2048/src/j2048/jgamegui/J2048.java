@@ -23,6 +23,7 @@ public class J2048 extends GameApplet {
 	public static final Color TEXT_COLOR = new Color(119, 110, 101);
 	public static final Color LIGHT_COLOR = new Color(250, 248, 239);
 	public static final Color LIGHT_TEXT = new Color(238, 228, 218);
+	public static final Color BUTTON_COLOR = new Color(143, 122, 102);
 
 	public J2048() {
 		core.setTargetFPS(60);
